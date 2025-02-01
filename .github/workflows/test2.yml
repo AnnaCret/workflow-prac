@@ -8,4 +8,4 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Get Detail
-              run: echo "${{toJson(github)}}"
+              run: echo "${{toJson(github.event)}}"
