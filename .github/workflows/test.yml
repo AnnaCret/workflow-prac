@@ -34,6 +34,6 @@ jobs:
             - name: Display 2nd message
               run: echo "Tested"
             - name: Build
-              run: npm build
+              run: npm run build
             - name: Third message
               run: echo "Built project" 
