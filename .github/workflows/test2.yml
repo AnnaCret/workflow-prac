@@ -1,0 +1,11 @@
+name: Issue creation
+on:
+    issues:
+        types: opened
+
+jobs:
+    issue:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Detail
+              run: echo "${{toJson(github)}}"
