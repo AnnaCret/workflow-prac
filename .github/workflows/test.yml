@@ -68,7 +68,7 @@ jobs:
           path: dist
   deploy:
     needs: [lint, test, build]
-    uses: ./.github/workflows/reusable.yml
+    uses: ./.github/workflows/reuable.yml
     with:
       artifact-name: dist-files
 #      secrets:
