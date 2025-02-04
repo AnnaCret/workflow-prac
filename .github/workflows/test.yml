@@ -68,18 +68,27 @@ jobs:
           path: dist
   deploy:
     needs: [lint, test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist-files
-      - name: Output contents
-        run: ls
-      - name: Output filename
-        run: echo "${{ needs.test_build.outputs.script-file }}"
-      - name: Deploy
-        run: echo "Deploying...."
+    uses: ./.github/workflows/reusable.yml
+    with:
+      artifact-name: dist-files
+#      secrets:
+#        some=secret:
+  print-deploy-result:
+     needs: deploy
+     runs-on: ubuntu-latest
+     steps:
+       - name: print deploy result
+         run: echo "${{ needs.deploy.outputs.result }}
+#       - name: Get build artifacts
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: dist-files
+#       - name: Output contents
+#         run: ls
+#       - name: Output filename
+#         run: echo "${{ needs.test_build.outputs.script-file }}"
+#       - name: Deploy
+#         run: echo "Deploying...."
   report:
     needs: [lint, test, deploy]
     if: failure()
