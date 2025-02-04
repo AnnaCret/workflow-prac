@@ -26,7 +26,7 @@ jobs:
             - name:  Display message
               run: echo "Ran lint"
     test_build:
-        needs: lint
+#        needs: lint
         runs-on: ubuntu-latest
         outputs:
           script-file: ${{steps.publish.outputs.script-file}}
@@ -47,12 +47,12 @@ jobs:
             - name: Run test
               id: run-test
               run: npm test
-            - name: Test report
-              if: failure() && steps.run-test.outcome == 'failure'
-              uses: actions/upload-artifact@v4
-              with:
-                name: test-report
-                path: test.json
+#            - name: Test report
+#              if: failure() && steps.run-test.outcome == 'failure'
+#              uses: actions/upload-artifact@v4
+#              with:
+#                name: test-report
+#                path: test.json
             - name: Build
               run: npm run build
             - name: Publish JS filename
@@ -82,3 +82,12 @@ jobs:
           run: echo "${{ needs.test_build.outputs.script-file }}"
         - name: Deploy
           run: echo "Deploying..."
+    report:
+      needs: [lint, test_build, report]
+      if: failure()
+      runs-on: ubuntu-latest
+      steps:
+        - name: output information
+          run: |
+            echo "something went wrong"
+            echo "{{ toJSON(github) }}"
