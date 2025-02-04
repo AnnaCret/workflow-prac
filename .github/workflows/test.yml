@@ -45,9 +45,14 @@ jobs:
             - name: Install Dependencies
               run: npm ci
             - name: Run test
+              id: run-test
               run: npm test
-            - name: Display 2nd message
-              run: echo "Tested"
+            - name: Test report
+              if: failure() && steps.run-test.outcome == 'failure
+              uses: actions/upload-artifact@v4
+              with:
+                name: test-report
+                path: test.json
             - name: Build
               run: npm run build
             - name: Publish JS filename
