@@ -78,7 +78,7 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - name: print deploy result
-         run: echo "${{ needs.deploy.outputs.result }}
+         run: echo '${{ needs.deploy.outputs.result }}'
 #       - name: Get build artifacts
 #         uses: actions/download-artifact@v4
 #         with:
