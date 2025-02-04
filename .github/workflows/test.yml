@@ -67,7 +67,7 @@ jobs:
           name: dist-files
           path: dist
   deploy:
-    needs: test_build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get build artifacts
@@ -81,7 +81,7 @@ jobs:
       - name: Deploy
         run: echo "Deploying...."
   report:
-    needs: [lint, test_build, deploy]
+    needs: [lint, test, deploy]
     if: failure()
     runs-on: ubuntu-latest
     steps:
