@@ -15,11 +15,13 @@ jobs:
               with:
                 node-version: 18
             - name: Cache dependencies
+              id: cache
               uses: actions/cache@v4
               with:
                 path: ~/.npm
                 key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
             - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit !='true'
               run: npm ci
             - name: Run Lint
               run: npx eslint --ext .jsx --fix src
@@ -38,11 +40,13 @@ jobs:
               with:
                 node-version: 18
             - name: Cache dependencies
+              id: cache
               uses: actions/cache@v4
               with:
                 path: ~/.npm
                 key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
             - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'True'
               run: npm ci
             - name: Run test
               id: run-test
