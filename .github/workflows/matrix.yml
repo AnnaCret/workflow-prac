@@ -1,0 +1,37 @@
+name: matrix implementation
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    continue-on-error: true
+    strategy:
+      matrix:
+        node-version: [12,14,16]
+        operating-system: [ubuntu-latest, windows-latest]
+        include:
+          - node-version: 18
+            operating-system: ubuntu-latest
+        exclude:
+          - node-version: 14
+            operating-system: windows-latest
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: get code
+        uses: actions/checkout@v4
+      - name: Install nodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache dependency
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: node-modules
+          key: deps-node-modules-${{ hashfiles('**/package-lock.json') }}
+      - name: Install dependency
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build project
+        run: npm run build
